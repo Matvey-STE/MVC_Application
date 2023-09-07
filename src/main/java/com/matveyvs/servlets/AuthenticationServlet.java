@@ -1,7 +1,7 @@
 package com.matveyvs.servlets;
 
 import com.matveyvs.dto.UserDto;
-import com.matveyvs.entity.User;
+import com.matveyvs.entity.UserEntity;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -29,7 +29,7 @@ public class AuthenticationServlet extends HttpServlet {
         } else {
             req.removeAttribute("error");
             if (userDto.getUserByLogin(login).isPresent()) {
-                User user = userDto.getUserByLogin(login).get();
+                UserEntity user = userDto.getUserByLogin(login).get();
                 req.setAttribute("user", user);
             }
             req.getRequestDispatcher("menu.jsp").forward(req, resp);

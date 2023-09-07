@@ -1,7 +1,7 @@
 package com.matveyvs.servlets;
 
 import com.matveyvs.dto.UserDto;
-import com.matveyvs.entity.User;
+import com.matveyvs.entity.UserEntity;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +18,7 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String login = req.getParameter("login");
-        Optional<User> userByLogin = userDto.getUserByLogin(login);
+        Optional<UserEntity> userByLogin = userDto.getUserByLogin(login);
 
         resp.setContentType("text/html");
 
@@ -31,7 +31,7 @@ public class UserServlet extends HttpServlet {
         out.println("</header>");
 
         if (userByLogin.isPresent()) {
-            User user = userByLogin.get();
+            UserEntity user = userByLogin.get();
             out.println("<main>");
             out.println("<p>Name: " + user.getName() + "</p>");
             out.println("<p>Age: " + user.getAge() + "</p>");
@@ -59,11 +59,11 @@ public class UserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String login = req.getParameter("login");
         String newName = req.getParameter("newName");
-        Optional<User> userByLogin = userDto.getUserByLogin(login);
+        Optional<UserEntity> userByLogin = userDto.getUserByLogin(login);
 
         String tempLogin = "";
         if (userByLogin.isPresent()) {
-            User user = userByLogin.get();
+            UserEntity user = userByLogin.get();
             user.setName(newName);
             tempLogin = user.getLogin();
             userDto.updateUserByLogin(login, user);

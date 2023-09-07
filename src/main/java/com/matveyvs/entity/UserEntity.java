@@ -2,16 +2,16 @@ package com.matveyvs.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class User {
+public class UserEntity {
     private String name;
     private String age;
     private String email;
     private String login;
     private String password;
 
-    public User(@JsonProperty("name") String name, @JsonProperty("age") String age,
-                @JsonProperty("email") String email, @JsonProperty("login") String login,
-                @JsonProperty("password") String password) {
+    public UserEntity(@JsonProperty("name") String name, @JsonProperty("age") String age,
+                      @JsonProperty("email") String email, @JsonProperty("login") String login,
+                      @JsonProperty("password") String password) {
         this.name = name;
         this.age = age;
         this.email = email;

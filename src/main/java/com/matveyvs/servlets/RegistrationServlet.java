@@ -1,8 +1,8 @@
 package com.matveyvs.servlets;
 
 import com.matveyvs.dto.UserDto;
-import com.matveyvs.entity.User;
-import com.matveyvs.service.Validation;
+import com.matveyvs.entity.UserEntity;
+import com.matveyvs.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,7 +14,7 @@ import java.io.IOException;
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
     UserDto userDto = new UserDto();
-    Validation validation = new Validation();
+    UserService validation = new UserService();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -62,7 +62,7 @@ public class RegistrationServlet extends HttpServlet {
             req.getRequestDispatcher("registration.jsp").forward(req, resp);
         } else {
             req.removeAttribute(errorAttribute);
-            User user = new User(name, age, email, login, pwd);
+            UserEntity user = new UserEntity(name, age, email, login, pwd);
             userDto.addUser(user);
             req.setAttribute("user", user);
             req.getRequestDispatcher("menu.jsp").forward(req, resp);

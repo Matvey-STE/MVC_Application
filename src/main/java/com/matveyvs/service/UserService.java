@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Validation implements Serializable {
+public class UserService implements Serializable {
     public Boolean isValidName(String name) {
         String regex = "^[A-Z][a-zA-Z]{2,14}$";
         Pattern pattern = Pattern.compile(regex);

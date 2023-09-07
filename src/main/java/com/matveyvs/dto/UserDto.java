@@ -1,7 +1,7 @@
 package com.matveyvs.dto;
 
 import com.matveyvs.dao.UserDao;
-import com.matveyvs.entity.User;
+import com.matveyvs.entity.UserEntity;
 
 import java.io.Serializable;
 import java.util.Optional;
@@ -9,11 +9,11 @@ import java.util.Optional;
 public class UserDto implements Serializable {
     UserDao userDao = new UserDao("/Users/matvey/MyProjects/MVC_Application/src/main/resources/file.json");
 
-    public boolean addUser(User user) {
+    public boolean addUser(UserEntity user) {
         return userDao.writeUserToJson(user);
     }
 
-    public Optional<User> getUserByLogin(String login) {
+    public Optional<UserEntity> getUserByLogin(String login) {
         return userDao.getUserByLogin(login);
     }
 
@@ -29,7 +29,7 @@ public class UserDto implements Serializable {
         return userDao.isEmailExists(email);
     }
 
-    public boolean updateUserByLogin(String login, User user) {
+    public boolean updateUserByLogin(String login, UserEntity user) {
         return userDao.updateUserByLogin(login, user);
     }
 

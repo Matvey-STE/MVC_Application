@@ -3,7 +3,7 @@ package com.matveyvs.dao;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.matveyvs.entity.User;
+import com.matveyvs.entity.UserEntity;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,9 +19,9 @@ public class UserDao implements Serializable {
         this.path = filePath;
     }
 
-    public Optional<List<User>> getAllUsersFromJson() {
+    public Optional<List<UserEntity>> getAllUsersFromJson() {
         ObjectMapper objectMapper = new ObjectMapper();
-        List<User> listOfUsers;
+        List<UserEntity> listOfUsers;
 
         File jsonFile = new File(path);
         if (!jsonFile.exists() || jsonFile.length() == 0) {
@@ -38,13 +38,13 @@ public class UserDao implements Serializable {
         return Optional.ofNullable(listOfUsers);
     }
 
-    public boolean writeUserToJson(User user) {
-        List<User> listOfUser = getAllUsersFromJson().orElse(new ArrayList<>());
+    public boolean writeUserToJson(UserEntity user) {
+        List<UserEntity> listOfUser = getAllUsersFromJson().orElse(new ArrayList<>());
         listOfUser.add(user);
         return writeListToJson(listOfUser);
     }
 
-    private boolean writeListToJson(List<User> listOfUser) {
+    private boolean writeListToJson(List<UserEntity> listOfUser) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         try {
@@ -57,12 +57,12 @@ public class UserDao implements Serializable {
     }
 
     public boolean removeUserByLogin(String login) {
-        Optional<List<User>> allUsersFromJson = getAllUsersFromJson();
+        Optional<List<UserEntity>> allUsersFromJson = getAllUsersFromJson();
         if (allUsersFromJson.isPresent()) {
-            List<User> users = allUsersFromJson.get();
-            Optional<User> userByLogin = getUserByLogin(login);
+            List<UserEntity> users = allUsersFromJson.get();
+            Optional<UserEntity> userByLogin = getUserByLogin(login);
             if (userByLogin.isPresent()) {
-                User user = userByLogin.get();
+                UserEntity user = userByLogin.get();
                 users.remove(user);
                 return writeListToJson(users);
             }
@@ -70,18 +70,18 @@ public class UserDao implements Serializable {
         return false;
     }
 
-    public Optional<User> getUserByLogin(String login) {
-        Optional<List<User>> listOfUser = getAllUsersFromJson();
+    public Optional<UserEntity> getUserByLogin(String login) {
+        Optional<List<UserEntity>> listOfUser = getAllUsersFromJson();
 
         return listOfUser.flatMap(users -> users.stream()
                 .filter(user -> user.getLogin().equals(login))
                 .findFirst());
     }
 
-    public boolean updateUserByLogin(String login, User user) {
-        Optional<List<User>> allUsersFromJson = getAllUsersFromJson();
+    public boolean updateUserByLogin(String login, UserEntity user) {
+        Optional<List<UserEntity>> allUsersFromJson = getAllUsersFromJson();
         if (allUsersFromJson.isPresent()) {
-            List<User> users = allUsersFromJson.get();
+            List<UserEntity> users = allUsersFromJson.get();
             users.removeIf(us -> us.getLogin().equals(login));
             users.add(user);
             return writeListToJson(users);
@@ -95,13 +95,13 @@ public class UserDao implements Serializable {
     }
 
     public boolean isEmailExists(String email) {
-        Optional<List<User>> listOfUser = getAllUsersFromJson();
+        Optional<List<UserEntity>> listOfUser = getAllUsersFromJson();
         return listOfUser.map(users -> users.stream().anyMatch(user -> user.getEmail().equals(email)))
                 .orElse(false);
     }
 
     public Optional<String> getUserPasswordByLogin(String login) {
         return getUserByLogin(login)
-                .map(User::getPassword);
+                .map(UserEntity::getPassword);
     }
 }
